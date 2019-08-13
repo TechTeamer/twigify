@@ -1,24 +1,17 @@
 'use strict';
 
-var twig    = require('twig').twig;
+var Twig    = require('twig')
+var twig    = Twig.twig
 var through = require('through2');
-var minify  = require('html-minifier').minify;
 
 var ext = /\.(twig)$/;
 
-var minifyDefaults = {
-  removeComments: true,
-  collapseWhitespace: true
-};
-
-function compile(id, str) {
-  var minified = minify(str, minifyDefaults);
-
+function compile(id, data) {
   var template = twig({ ref: id });
   if (!template) {
     template = twig({
       id: id,
-      data: minified
+      data
     });
   }
 
