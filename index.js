@@ -1,64 +1,70 @@
-'use strict';
+const path = require('path')
+const through = require('through2')
+const proc = require('process')
+const Twig = require('twig')
+const twig = Twig.twig
 
-var Twig    = require('twig')
-var twig    = Twig.twig
-var through = require('through2');
+const DEFAULT_EXT_REGEX = /\.(twig)$/
+const DEFAULT_TWIG_OPTIONS = {
+  allowInlineIncludes: true
+}
 
-var ext = /\.(twig)$/;
+let extRegex
+let twigOpts
 
-function compile(id, data) {
-  var template = twig({ ref: id });
+function compile (filePath, data) {
+  let template = twig({ ref: filePath })
   if (!template) {
-    template = twig({
-      id: id,
-      data
-    });
+    template = twig({ id: filePath, data })
   }
 
-  var tokens = JSON.stringify(template.tokens);
+  const cwd = proc.cwd()
+  const relativeFilePath = path.relative(cwd, filePath)
 
-  // the id will be the filename and path relative to the require()ing module
-  return 'twig({ id: __filename, path: __dirname, data:' + tokens + ', precompiled: true, allowInlineIncludes: true })';
+  const twigOptions = Object.assign({}, DEFAULT_TWIG_OPTIONS, twigOpts, {
+    id: relativeFilePath,
+    data: template.tokens,
+    precompiled: true
+  })
+
+  return `twig(${JSON.stringify(twigOptions)})`
 }
 
-function process(source) {
-  return (
-    'var twig = require(\'twig\').twig;\n' +
-    'module.exports = ' + source + ';\n'
-  );
+function process (source) {
+  return `const twig = require('twig').twig\n` +
+    `module.exports = ${source}`
 }
 
-function twigify(file, opts) {
-  if (!ext.test(file)) return through();
-  if (!opts) opts = {};
+function twigify (filePath, options) {
+  const {
+    ext = DEFAULT_EXT_REGEX,
+    twigOptions = DEFAULT_TWIG_OPTIONS
+  } = options
 
-  var id = file;
-  // @TODO: pass a path via CLI to use for relative file paths
-  //opts.path ? file.replace(opts.path, '') : file;
+  extRegex = ext
+  twigOpts = twigOptions
 
-  var buffers = [];
-
-  function push(chunk, enc, next) {
-    buffers.push(chunk);
-    next();
+  if (!extRegex.test(filePath)) {
+    return through()
   }
 
-  function end(next) {
-    var str = Buffer.concat(buffers).toString();
-    var compiledTwig;
+  const buffers = []
 
-    try {
-      compiledTwig = compile(id, str);
-    } catch(e) {
-      return this.emit('error', e);
-    }
-
-    this.push(process(compiledTwig));
-    next();
+  function push (chunk, _, next) {
+    buffers.push(chunk)
+    next()
   }
 
-  return through(push, end);
+  function end (next) {
+    const rawTemplate = Buffer.concat(buffers).toString()
+    const compiledTwig = compile(filePath, rawTemplate)
+
+    this.push(process(compiledTwig))
+    next()
+  }
+
+  return through(push, end)
 }
 
-module.exports = twigify;
-module.exports.compile = compile;
+module.exports = twigify
+module.exports.compile = compile
