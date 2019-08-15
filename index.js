@@ -1,6 +1,5 @@
 const path = require('path')
 const through = require('through2')
-const proc = require('process')
 const Twig = require('twig')
 const twig = Twig.twig
 
@@ -18,7 +17,7 @@ function compile (filePath, data) {
     template = twig({ id: filePath, data })
   }
 
-  const cwd = proc.cwd()
+  const cwd = path.resolve('.')
   const relativeFilePath = path.relative(cwd, filePath)
 
   const twigOptions = Object.assign({}, DEFAULT_TWIG_OPTIONS, twigOpts, {
