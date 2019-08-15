@@ -7,7 +7,7 @@ twigify
 With [`npm`](http://npmjs.org/) as a local development dependency:
 
 ```bash
-npm install --save-dev twigify
+npm install --save-dev @techteamer/twigify
 ```
 
 ### Usage ###
@@ -17,37 +17,39 @@ In `templates/test.twig`:
 <h1>{{ title }}</h1>
 ```
 
-In `test.js`:
+`test.js`:
 ```js
-var template = require('./templates/test.twig');
-var body = template.render({
+const template = require('./templates/test.twig')
+const body = template.render({
   title: 'Main Page'
-});
-$('body').html(body);
+})
+
+document.body.innerHTML = body
 ```
 
 Including sub templates:
 
-In `templates/main.twig`:
+`templates/main.twig`:
 ```html+twig
 <h1>{{ title }}</h1>
 {% include 'body.twig' %}
 ```
 
-In `main.js`:
+`main.js`:
 ```js
 // need to require() this so that it is available for main.twig
-var bodyTemplate = require('./templates/body.twig');
-var mainTemplate = require('./templates/main.twig');
+const bodyTemplate = require('./templates/body.twig')
+const mainTemplate = require('./templates/main.twig')
 
-var page = mainTemplate.render({
+const page = mainTemplate.render({
   title: 'Main Page'
-});
-$('body').html(page);
+})
+
+document.body.innerHTML = page
 ```
 
 #### Transforming with the command-line ####
 
 ```bash
-browserify test.js -t twigify > test-bundle.js
+browserify test.js -t @techteamer/twigify > test-bundle.js
 ```
