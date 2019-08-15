@@ -15,7 +15,7 @@
     "test": "standard"
   },
   "main": "index.js",
-  "homepage": "https://github.com/dane-harnett/twigify",
+  "homepage": "https://github.com/techteamer/twigify",
   "author": "TechTeamer",
   "bugs": "https://github.com/techteamer/twigify/issues",
   "license": "MIT",
