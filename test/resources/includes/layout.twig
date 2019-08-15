@@ -1,0 +1,11 @@
+<html>
+<head>
+    <title>This is a test</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+{% include 'test/resources/includes/header.twig' with { pageName: pageName } %}
+<section>{% block content %}{% endblock %}</section>
+{% include 'test/resources/includes/footer.twig' with { greeting: greeting } %}
+</body>
+</html>

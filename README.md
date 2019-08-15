@@ -112,3 +112,9 @@ browserify(file, {
 ```bash
 browserify test.js -t @techteamer/twigify > test-bundle.js
 ```
+
+### Run tests
+
+```bash
+npm run test
+```
