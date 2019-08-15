@@ -1,16 +1,18 @@
 twigify
 =======
 
+> This is a fork of [dane-harnett/twigify](https://github.com/dane-harnett/twigify) by [TechTeamer](https://techteamer.com).
+
 `twigify` is a [Browserify](https://github.com/substack/node-browserify) transform for creating modules of pre-compiled [Twig.js](https://github.com/justjohn/twig.js) templates.
 
-### Installation ###
+### Installation
 With [`npm`](http://npmjs.org/) as a local development dependency:
 
 ```bash
 npm install --save-dev @techteamer/twigify
 ```
 
-### Usage ###
+### Usage
 
 In `templates/test.twig`:
 ```html+twig
@@ -30,7 +32,7 @@ document.body.innerHTML = body
 Including sub templates:
 
 `templates/main.twig`:
-```html+twig
+```twig
 <h1>{{ title }}</h1>
 {% include 'templates/body.twig' %}
 ```
@@ -65,7 +67,7 @@ Let's suppose we have the following directory structure:
 
 Our build is run in `/tmp/test-project` as follows:
 
-    user@pc:/tmp/test-project $ browserify main.js -t @techteamer/twigify > build/bundle.js
+    user@pc:/tmp/test-project$ browserify main.js -t @techteamer/twigify > build/bundle.js
 
 This means, that in `templates/main.twig`, we include `templates/features/menu.twig` and `templates/features/footer.twig`. `Extend` works the same way.
 
@@ -105,7 +107,7 @@ browserify(file, {
 })
 ```
 
-#### Transforming with the command-line ####
+### Transforming with the command-line
 
 ```bash
 browserify test.js -t @techteamer/twigify > test-bundle.js
