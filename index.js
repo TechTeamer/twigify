@@ -40,6 +40,14 @@ function twigify (filePath, options) {
     twigOptions = DEFAULT_TWIG_OPTIONS
   } = options
 
+  if (ext instanceof RegExp) {
+    extRegex = ext
+  } else if (typeof ext === 'string') {
+    extRegex = new RegExp(ext)
+  } else {
+    throw new Error('Invalid config: "ext" must be an instance of RegExp or a string!')
+  }
+
   extRegex = ext
   twigOpts = twigOptions
 
