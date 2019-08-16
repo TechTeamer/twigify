@@ -48,7 +48,6 @@ function twigify (filePath, options) {
     throw new Error('Invalid config: "ext" must be an instance of RegExp or a string!')
   }
 
-  extRegex = ext
   twigOpts = twigOptions
 
   if (!extRegex.test(filePath)) {
