@@ -17,7 +17,7 @@ generateTestFiles().catch(err => {
 })
 
 async function generateTestFiles () {
-  await gen({
+  await generateTestFile({
     id: 1,
     mainTemplate: '1.template.twig',
     script: '1.script.js',
@@ -28,7 +28,7 @@ async function generateTestFiles () {
     includes: ['layout.twig', 'header.twig', 'footer.twig']
   })
 
-  await gen({
+  await generateTestFile({
     id: 2,
     mainTemplate: '2.template.tpl',
     script: '2.script.js',
@@ -41,7 +41,7 @@ async function generateTestFiles () {
   })
 }
 
-async function gen ({ id, mainTemplate, script, context, includes, twigifyOptions = {} }) {
+async function generateTestFile ({ id, mainTemplate, script, context, includes, twigifyOptions = {} }) {
   const compiled = includes
     .map(i => `includes/${i}`)
     .concat(mainTemplate)
