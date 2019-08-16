@@ -1,4 +1,4 @@
-{% extends 'test/resources/includes/layout.twig' %}
+{% extends 'test/source/includes/layout.twig' %}
 
 {% block head %}
     <meta charset="utf-8">

@@ -1,0 +1,11 @@
+{
+  "description": "passing a custom extension should work",
+  "twigifyOptions": { "ext": "\\.(twig|tpl)$" },
+  "script": "2.script.js",
+  "mainTemplate": "2.template.tpl",
+  "context": {
+    "pageName": "twigify",
+    "greeting": "Hello, World!"
+  },
+  "includes": ["layout.twig", "header.twig", "footer.twig"]
+}

@@ -1,3 +1,6 @@
 node_modules
+.idea/
 .nyc_output
 .__browserify_string_empty.js
+test/compiled/*
+!test/compiled/.gitkeep

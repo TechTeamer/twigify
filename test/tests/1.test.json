@@ -1,0 +1,10 @@
+{
+  "description": "template generation with custom filter, include & extend",
+  "script": "1.script.js",
+  "mainTemplate": "1.template.twig",
+  "context": {
+    "pageName": "twigify",
+    "greeting": "Hello, World!"
+  },
+  "includes": ["layout.twig", "header.twig", "footer.twig"]
+}
