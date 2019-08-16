@@ -14,6 +14,7 @@
   "scripts": {
     "test": "standard && node test/generateTestFiles && node test/test"
   },
+  "maintainers": ["Benjamin Laib"],
   "main": "src/index.js",
   "homepage": "https://github.com/techteamer/twigify",
   "author": "TechTeamer",
