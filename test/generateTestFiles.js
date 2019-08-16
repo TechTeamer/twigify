@@ -1,19 +1,47 @@
 const fs = require('fs')
 const path = require('path')
 const Twig = require('twig')
+const util = require('util')
+const twigify = require('../src')
+const browserify = require('browserify')
+
+const writeFile = util.promisify(fs.writeFile)
+
 Twig.extendFilter('custom_uppercase', str => str.toUpperCase())
 
 const root = 'test/source'
-const testConfigs = fs.readdirSync('./test/tests')
-  .filter(f => f.endsWith('.test.json'))
-  .reduce((acc, f) => {
-    acc[f.split('.')[0]] = require(path.resolve(path.join('./test/tests', f)))
-    return acc
-  }, {})
 
-Object.entries(testConfigs).forEach(generateTestFile)
+generateTestFiles().catch(err => {
+  console.error('Error generating test files:', err)
+  process.exit(1)
+})
 
-function generateTestFile ([id, { mainTemplate, context, includes }]) {
+async function generateTestFiles () {
+  await gen({
+    id: 1,
+    mainTemplate: '1.template.twig',
+    script: '1.script.js',
+    context: {
+      pageName: 'twigify',
+      greeting: 'Hello, World!'
+    },
+    includes: ['layout.twig', 'header.twig', 'footer.twig']
+  })
+
+  await gen({
+    id: 2,
+    mainTemplate: '2.template.tpl',
+    script: '2.script.js',
+    context: {
+      pageName: 'twigify',
+      greeting: 'Hello, World!'
+    },
+    includes: ['layout.twig', 'header.twig', 'footer.twig'],
+    twigifyOptions: { ext: /.(twig|tpl)$/ }
+  })
+}
+
+async function gen ({ id, mainTemplate, script, context, includes, twigifyOptions = {} }) {
   const compiled = includes
     .map(i => `includes/${i}`)
     .concat(mainTemplate)
@@ -32,5 +60,13 @@ function generateTestFile ([id, { mainTemplate, context, includes }]) {
       return acc
     }, {})
 
-  fs.writeFileSync(`./test/compiled/${id}.html`, compiled[mainTemplate].render(context))
+  await writeFile(`./test/compiled/${id}.expected.html`, compiled[mainTemplate].render(context))
+
+  const b = browserify(path.join('test/source', script), {
+    transform: [[twigify, twigifyOptions]]
+  })
+  const bundleFun = util.promisify(b.bundle.bind(b))
+  const bundle = await bundleFun()
+
+  await writeFile(`./test/compiled/${id}.bundle.js`, bundle)
 }

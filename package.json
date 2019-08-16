@@ -12,7 +12,7 @@
     "twig.js"
   ],
   "scripts": {
-    "test": "standard ./src/index.js && node test/generateTestFiles && node test/test"
+    "test": "standard && node test/generateTestFiles && node test/test"
   },
   "main": "src/index.js",
   "homepage": "https://github.com/techteamer/twigify",

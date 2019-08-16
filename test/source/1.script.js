@@ -8,4 +8,4 @@ const context = require('../tests/1.test').context
 
 Twig.extendFilter('custom_uppercase', str => str.toUpperCase())
 
-html = main.render(context)
+console.log(main.render(context))
