@@ -1,6 +1,6 @@
 {
   "name": "@techteamer/twigify",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Browserify transform for pre-compiled Twig.js templates",
   "keywords": [
     "template",
@@ -14,7 +14,9 @@
   "scripts": {
     "test": "standard && node test/generateTestFiles && node test/test"
   },
-  "maintainers": ["Benjamin Laib"],
+  "maintainers": [
+    "Benjamin Laib"
+  ],
   "main": "src/index.js",
   "homepage": "https://github.com/techteamer/twigify",
   "author": "TechTeamer",
@@ -25,8 +27,8 @@
     "url": "git://github.com/techteamer/twigify.git"
   },
   "dependencies": {
-    "through2": "^0.6.3",
-    "twig": "^0.7.2"
+    "through2": "^3.0.1",
+    "twig": "^1.13.3"
   },
   "devDependencies": {
     "browserify": "^16.5.0",
